@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+
+body {
+  -webkit-tap-highlight-color: transparent;
+
+  font-family: "Inter", sans-serif;
+}
+
+.font-mono-nhcoin {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+}
