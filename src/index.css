@@ -1,13 +1,27 @@
 @import "tailwindcss";
 
 
-body {
-  -webkit-tap-highlight-color: transparent;
 
-  font-family: "Inter", sans-serif;
+@keyframes pulseGlow {
+  0%, 100% { 
+    opacity: 1; 
+    text-shadow: 0 0 4px rgba(74, 222, 128, 0.5); 
+  }
+  50% { 
+    opacity: 0.8; 
+    text-shadow: 0 0 10px rgba(74, 222, 128, 0.8); 
+  }
 }
 
-.font-mono-nhcoin {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
+@keyframes bob {
+    0%, 100% { transform: translateY(0) }
+    50% { transform: translateY(-4px) }
+}
+
+.animate-pulseGlow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.animate-bob {
+  animation: bob 1.5s ease-in-out infinite;
 }
