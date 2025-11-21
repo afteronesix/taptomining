@@ -1,4 +1,3 @@
-// src/logic/Blockchain.ts
 import { TapcoinHash } from "../crypto/Blake2s";
 
 export interface Transaction {
