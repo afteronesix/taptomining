@@ -21,7 +21,7 @@ const initialMiningState: MiningState = {
   currentNonce: 0,
   totalProofs: 0,
   bestZeros: 0,
-  currentHash: 'Click "Mine NHCoin" to start finding valid blocks!',
+  currentHash: 'Click "Mine TapCoin" to start finding valid blocks!',
   isMining: false,
 };
 
@@ -51,7 +51,7 @@ export const useGameLogic = () => {
 
   const mineCoin = useCallback((validNonce: number, blockHash: string) => {
     const blockReward = BLOCKCHAIN.getBlockReward();
-    BLOCKCHAIN.newTransaction("NHCoin Network", "user", blockReward);
+    BLOCKCHAIN.newTransaction("TapCoin Network", "user", blockReward);
     const newBlock = BLOCKCHAIN.newBlock(validNonce);
 
     setChain([...BLOCKCHAIN.chain]);
