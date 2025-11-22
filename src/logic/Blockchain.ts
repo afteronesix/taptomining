@@ -24,7 +24,7 @@ export class Blockchain {
   public difficulty: number = 1;
   public targetBlockTime: number = 20000;
   public difficultyAdjustmentInterval: number = 5;
-  public maxDifficulty: number = 7;
+  public maxDifficulty: number = 2;
   public minDifficulty: number = 1;
   public miningStartTime: number | null = null;
   public miningMerkleRoot: string | null = null;
