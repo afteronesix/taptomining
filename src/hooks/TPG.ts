@@ -1,6 +1,6 @@
-export const tpgContract = '0x0C633B17e276A4C66FbdC65D6e92Cb9a7870Cd28';
+export const TpgContract = '0x0C633B17e276A4C66FbdC65D6e92Cb9a7870Cd28';
 
-export const tpgContractAbi = [
+export const TpgContractAbi = [
     {
       "inputs": [
         {
