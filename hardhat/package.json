@@ -1,0 +1,19 @@
+{
+  "name": "hardhat-tapcoin-deployer",
+  "version": "1.0.0",
+  "description": "Hardhat setup for Tapcoin Token and NFT deployment.",
+  "scripts": {
+    "deploy:tpg": "npx hardhat run scripts/deploy-tpg.js --network arbitrum",
+    "deploy:nft": "npx hardhat run scripts/deploy-nft.js --network arbitrum",
+    "compile": "npx hardhat compile"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.0.6",
+    "@nomicfoundation/hardhat-verify": "^2.0.8",
+    "@openzeppelin/hardhat-upgrades": "^3.2.0",
+    "@openzeppelin/contracts": "^5.0.2",
+    "@openzeppelin/contracts-upgradeable": "^5.0.2",
+    "dotenv": "^16.4.5",
+    "hardhat": "^2.22.4"
+  }
+}
