@@ -21,7 +21,7 @@ const initialMiningState: MiningState = {
   currentNonce: 0,
   totalProofs: 0,
   bestZeros: 0,
-  currentHash: 'Click "Mine NHCoin" to start finding valid blocks!',
+  currentHash: 'Click "Mine TapCoin" to start finding valid blocks!',
   isMining: false,
 };
 
@@ -44,12 +44,14 @@ export const useGameLogic = () => {
   const helpersIntervalRef = useRef<number>(0);
 
   const unspentCoins = useMemo(() => {
-    return chain.filter(block => block.index > 1).reduce((sum, block) => sum + block.reward, 0);
+    return chain
+      .filter((block) => block.index > 1)
+      .reduce((sum, block) => sum + block.reward, 0);
   }, [chain]);
 
   const mineCoin = useCallback((validNonce: number, blockHash: string) => {
     const blockReward = BLOCKCHAIN.getBlockReward();
-    BLOCKCHAIN.newTransaction("NHCoin Network", "user", blockReward);
+    BLOCKCHAIN.newTransaction("TapCoin Network", "user", blockReward);
     const newBlock = BLOCKCHAIN.newBlock(validNonce);
 
     setChain([...BLOCKCHAIN.chain]);
@@ -72,63 +74,65 @@ export const useGameLogic = () => {
     }, 2500);
   }, []);
 
-  const performHash = useCallback((noncesToTest: number = 1) => {
-    let { currentNonce, totalProofs, bestZeros, isMining } = miningState;
-    
-    if (!isMining) {
+  const performHash = useCallback(
+    (noncesToTest: number = 1) => {
+      let { currentNonce, totalProofs, bestZeros, isMining } = miningState;
+
+      if (!isMining) {
         BLOCKCHAIN.startMining();
         isMining = true;
-    }
-    
-    let lastBlock = BLOCKCHAIN.lastBlock();
-    let difficulty = BLOCKCHAIN.getDifficulty();
-    let latestHash = miningState.currentHash;
-    let success = false;
-    let validNonce = 0;
-    
-    for (let i = 0; i < noncesToTest; i++) {
+      }
+
+      let lastBlock = BLOCKCHAIN.lastBlock();
+      let difficulty = BLOCKCHAIN.getDifficulty();
+      let latestHash = miningState.currentHash;
+      let success = false;
+      let validNonce = 0;
+
+      for (let i = 0; i < noncesToTest; i++) {
         currentNonce++;
         totalProofs++;
-        
+
         const tempBlockHeader = {
-            index: lastBlock.index + 1,
-            timestamp: BLOCKCHAIN.miningStartTime || Date.now(),
-            merkleRoot:
-              BLOCKCHAIN.miningMerkleRoot ||
-              BLOCKCHAIN.calculateMerkleRoot(BLOCKCHAIN.currentTransactions),
-            previousHash: lastBlock.hash,
-            nonce: currentNonce,
-            difficulty: difficulty,
+          index: lastBlock.index + 1,
+          timestamp: BLOCKCHAIN.miningStartTime || Date.now(),
+          merkleRoot:
+            BLOCKCHAIN.miningMerkleRoot ||
+            BLOCKCHAIN.calculateMerkleRoot(BLOCKCHAIN.currentTransactions),
+          previousHash: lastBlock.hash,
+          nonce: currentNonce,
+          difficulty: difficulty,
         };
         const guessHash = BLOCKCHAIN.hashBlock(tempBlockHeader);
         const leadingZeros = guessHash.match(/^0*/)?.[0].length || 0;
-        
+
         if (leadingZeros > bestZeros) {
-            bestZeros = leadingZeros;
+          bestZeros = leadingZeros;
         }
-        
+
         latestHash = guessHash;
 
         if (leadingZeros >= difficulty) {
-            success = true;
-            validNonce = currentNonce;
-            break; 
+          success = true;
+          validNonce = currentNonce;
+          break;
         }
-    }
+      }
 
-    setMiningState((_prev) => ({
-      currentNonce: currentNonce,
-      totalProofs: totalProofs,
-      bestZeros: bestZeros,
-      currentHash: latestHash,
-      isMining: isMining,
-    }));
-    
-    if (success) {
+      setMiningState((_prev) => ({
+        currentNonce: currentNonce,
+        totalProofs: totalProofs,
+        bestZeros: bestZeros,
+        currentHash: latestHash,
+        isMining: isMining,
+      }));
+
+      if (success) {
         mineCoin(validNonce, latestHash);
-    }
-  }, [miningState, mineCoin]);
-
+      }
+    },
+    [miningState, mineCoin]
+  );
 
   const totalCPS = useMemo(() => {
     return (
@@ -136,7 +140,7 @@ export const useGameLogic = () => {
       helperCounts.miner * 10 +
       helperCounts.engineer * 25 +
       helperCounts.factory * 75 +
-      helperCounts.rocket * 200
+      helperCounts.rocket * 2000
     );
   }, [helperCounts]);
 
@@ -165,7 +169,7 @@ export const useGameLogic = () => {
         miner: 50,
         engineer: 200,
         factory: 800,
-        rocket: 4000,
+        rocket: 10,
       };
       return Math.floor(basePrices[type] * Math.pow(1.15, helperCounts[type]));
     },
@@ -184,22 +188,25 @@ export const useGameLogic = () => {
     },
     [gems, getPrice]
   );
-  
-  const sellBlock = useCallback((blockIndex: number, reward: number) => {
-    const gemsEarned = Math.round(reward * coinValue * 10) / 10;
-    
-    setGems((prev) => prev + gemsEarned);
-    setChain((prevChain) => prevChain.filter(block => block.index !== blockIndex));
-    
-  }, [coinValue]);
+
+  const sellBlock = useCallback(
+    (blockIndex: number, reward: number) => {
+      const gemsEarned = Math.round(reward * coinValue * 10) / 10;
+
+      setGems((prev) => prev + gemsEarned);
+      setChain((prevChain) =>
+        prevChain.filter((block) => block.index !== blockIndex)
+      );
+    },
+    [coinValue]
+  );
 
   const sellAllCoins = useCallback(() => {
     const gemsEarned = Math.round(unspentCoins * coinValue * 10) / 10;
-    
+
     setGems((prev) => prev + gemsEarned);
     setChain([BLOCKCHAIN.chain[0]]);
   }, [coinValue, unspentCoins]);
-
 
   useEffect(() => {
     const updateInterval = setInterval(() => {

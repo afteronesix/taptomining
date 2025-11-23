@@ -392,7 +392,7 @@ const App: React.FC = () => {
               </div>
               <div className="flex justify-between p-2 text-green-300 font-mono">
                 <span className="stat-label-inline text-gray-400">
-                  NHC Balance:
+                  TAPC Balance:
                 </span>
                 <span className="stat-value-inline font-bold text-xl">
                   {coins.toFixed(2)}

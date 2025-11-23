@@ -22,9 +22,9 @@ export class Blockchain {
   public chain: Block[] = [];
   public currentTransactions: Transaction[] = [];
   public difficulty: number = 1;
-  public targetBlockTime: number = 20000;
-  public difficultyAdjustmentInterval: number = 5;
-  public maxDifficulty: number = 7;
+  public targetBlockTime: number = 3;
+  public difficultyAdjustmentInterval: number = 2;
+  public maxDifficulty: number = 2;
   public minDifficulty: number = 1;
   public miningStartTime: number | null = null;
   public miningMerkleRoot: string | null = null;
